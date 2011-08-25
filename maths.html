@@ -73,9 +73,14 @@
     minute_hand(ctx, minute_x, minute_y);
   }
 
+
+  function init () {
+    draw(); 
+    setInterval(draw(), 1000);
+  }
 </script>
 </head>
-<body onload="draw(); setInterval(draw(), 1000)">
+<body onload="init()">
 <canvas id="canvas" width="300" height="300"></canvas>
 </body>
 </html>
