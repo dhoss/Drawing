@@ -5,19 +5,16 @@
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     ctx.save();
-    var m = offset(45);
     var h = offset(2);
-    var minute_x = m[0] * 50;
-    var minute_y = m[1] * 50;
     var hour_x   = h[0] * 25;
     var hour_y   = h[1] * 25;
     ctx.fillStyle = "rgb(200,0,0)";
   
     circle(ctx);
     hour_hand(ctx, hour_x, hour_y);
-    minute_hand(ctx, minute_x, minute_y);
+    update_minute(ctx, 20);
     hour_ticks(ctx);
-
+    ctx.restore();
   }
 
   function offset ( h ) {
@@ -31,6 +28,7 @@
   }
   
   function hour_ticks ( ctx ) {
+    ctx.save();
     for ( var i=0; i<12; i++ ) {	  
       ctx.beginPath();
       var tick = offset(i);
@@ -59,13 +57,24 @@
   }
     
   function draw_hand ( ctx, origin_x, origin_y, hand_x, hand_y ) {
+    ctx.save();
     ctx.moveTo(origin_x, origin_y);
     ctx.lineTo(origin_x+hand_x, origin_y-hand_y);
     ctx.stroke();
+    ctx.restore();
   }
+
+  function update_minute ( ctx ) {
+    var time = new Date();
+    var m = offset((Math.PI/30)*time.getMinutes() + (Math.PI/1800)*time.getSeconds());
+    var minute_x = m[0] * 50;
+    var minute_y = m[1] * 50;
+    minute_hand(ctx, minute_x, minute_y);
+  }
+
 </script>
 </head>
-<body onload="draw()">
+<body onload="draw(); setInterval(draw(), 1000)">
 <canvas id="canvas" width="300" height="300"></canvas>
 </body>
 </html>
