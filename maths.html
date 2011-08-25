@@ -69,6 +69,7 @@
     var m = offset((Math.PI/30)*time.getMinutes() + (Math.PI/1800)*time.getSeconds());
     var minute_x = m[0] * 50;
     var minute_y = m[1] * 50;
+    console.log('updating minute hand');
     minute_hand(ctx, minute_x, minute_y);
   }
 
