@@ -4,29 +4,37 @@
   function draw() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-    var m = length(45);
-    var h = length(2);
+    ctx.save();
+    var m = offset(45);
+    var h = offset(2);
     var minute_x = m[0] * 50;
     var minute_y = m[1] * 50;
     var hour_x   = h[0] * 25;
     var hour_y   = h[1] * 25;
     ctx.fillStyle = "rgb(200,0,0)";
+
     ctx.beginPath();
     ctx.arc(150, 150, 50, 0, Math.PI*2, true);
     ctx.moveTo(150, 150);
     ctx.lineTo(150+minute_x, 150-minute_y);
     ctx.moveTo(150, 150);
     ctx.lineTo(150+hour_x, 150-hour_y);
+    ctx.stroke();
+    ctx.save();
+
     for ( var i=0; i<12; i++ ) {
-      var tick = length(i);
+      ctx.beginPath();
+      var tick = offset(i);
       var x = tick[0];
       var y = tick[1];
-      ctx.moveTo(x, y);	    
-      ctx.lineTo(150+(tick[0]*35),150-(tick[1]*35));
+      ctx.moveTo(150+(x*50),150-(y*50));	    
+      ctx.lineTo(150+(x*35),150-(y*35));
+      ctx.stroke();
     }
-    ctx.stroke();
+    ctx.restore();
   }
-  function length( h ) {
+
+  function offset ( h ) {
     var x = Math.sin((h/12.0)*2.0*Math.PI);
     var y = Math.cos((h/12.0)*2.0*Math.PI);
     var coords = new Array(2);
