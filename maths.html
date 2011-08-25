@@ -12,26 +12,12 @@
     var hour_x   = h[0] * 25;
     var hour_y   = h[1] * 25;
     ctx.fillStyle = "rgb(200,0,0)";
+  
+    circle(ctx);
+    hour_hand(ctx, hour_x, hour_y);
+    minute_hand(ctx, minute_x, minute_y);
+    hour_ticks(ctx);
 
-    ctx.beginPath();
-    ctx.arc(150, 150, 50, 0, Math.PI*2, true);
-    ctx.moveTo(150, 150);
-    ctx.lineTo(150+minute_x, 150-minute_y);
-    ctx.moveTo(150, 150);
-    ctx.lineTo(150+hour_x, 150-hour_y);
-    ctx.stroke();
-    ctx.save();
-
-    for ( var i=0; i<12; i++ ) {
-      ctx.beginPath();
-      var tick = offset(i);
-      var x = tick[0];
-      var y = tick[1];
-      ctx.moveTo(150+(x*50),150-(y*50));	    
-      ctx.lineTo(150+(x*35),150-(y*35));
-      ctx.stroke();
-    }
-    ctx.restore();
   }
 
   function offset ( h ) {
@@ -43,7 +29,45 @@
     console.log("vars" + coords[0] + ", " + coords[1]);
     return coords;
   }
- </script>
+  
+  function hour_ticks ( ctx ) {
+    for ( var i=0; i<12; i++ ) {	  
+      ctx.beginPath();
+      var tick = offset(i);
+      var x = tick[0];
+      var y = tick[1];
+      ctx.moveTo(150+(x*50),150-(y*50));            
+      ctx.lineTo(150+(x*35),150-(y*35));
+      ctx.stroke();
+    }
+    ctx.restore;
+  }
+
+  function circle ( ctx ) {
+    ctx.beginPath();
+    ctx.arc(150, 150, 50, 0, Math.PI*2, true);
+    /*ctx.moveTo(150, 150);
+    ctx.lineTo(150+minute_x, 150-minute_y);
+    ctx.moveTo(150, 150);
+    ctx.lineTo(150+hour_x, 150-hour_y);*/
+    ctx.stroke();
+    ctx.save();
+  }
+
+  function hour_hand ( ctx, hour_x, hour_y ) {
+    draw_hand(ctx, 150, 150, hour_x, hour_y);    
+  }
+
+  function minute_hand ( ctx, minute_x, minute_y ) {
+    draw_hand(ctx, 150, 150, minute_x, minute_y);
+  }
+    
+  function draw_hand ( ctx, origin_x, origin_y, hand_x, hand_y ) {
+    ctx.moveTo(origin_x, origin_y);
+    ctx.lineTo(origin_x+hand_x, origin_y-hand_y);
+    ctx.stroke();
+  }
+</script>
 </head>
 <body onload="draw()">
 <canvas id="canvas" width="300" height="300"></canvas>
