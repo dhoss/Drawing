@@ -4,14 +4,14 @@
   function draw() {
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
-    var hour = 12;
+    var hour = 2;
     var x = Math.sin((hour/12.0)*2.0*Math.PI) * 50;
     var y = Math.cos((hour/12.0)*2.0*Math.PI) * 50;
     ctx.fillStyle = "rgb(200,0,0)";
     ctx.beginPath();
     ctx.arc(150, 150, 50, 0, Math.PI*2, true);
     ctx.moveTo(150, 150);
-    ctx.lineTo(150+x, 150+y);
+    ctx.lineTo(150+x, 150-y);
     ctx.stroke();
    }
  </script>
