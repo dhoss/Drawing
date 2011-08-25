@@ -17,6 +17,13 @@
     ctx.lineTo(150+minute_x, 150-minute_y);
     ctx.moveTo(150, 150);
     ctx.lineTo(150+hour_x, 150-hour_y);
+    for ( var i=0; i<12; i++ ) {
+      var tick = length(i);
+      var x = tick[0];
+      var y = tick[1];
+      ctx.moveTo(x, y);	    
+      ctx.lineTo(150+(tick[0]*35),150-(tick[1]*35));
+    }
     ctx.stroke();
   }
   function length( h ) {
@@ -25,6 +32,7 @@
     var coords = new Array(2);
     coords[0] = x;
     coords[1] = y;
+    console.log("vars" + coords[0] + ", " + coords[1]);
     return coords;
   }
  </script>
