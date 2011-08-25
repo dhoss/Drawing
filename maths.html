@@ -5,15 +5,30 @@
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     var hour = 2;
-    var x = Math.sin((hour/12.0)*2.0*Math.PI) * 50;
-    var y = Math.cos((hour/12.0)*2.0*Math.PI) * 50;
+    var minute = 45;
+    var m = length(2);
+    var h = length(45);
+    var minute_x = m[0] * 50;
+    var minute_y = m[1] * 50;
+    var hour_x   = h[0] * 25;
+    var hour_y   = h[1] * 25;
     ctx.fillStyle = "rgb(200,0,0)";
     ctx.beginPath();
     ctx.arc(150, 150, 50, 0, Math.PI*2, true);
     ctx.moveTo(150, 150);
-    ctx.lineTo(150+x, 150-y);
+    ctx.lineTo(150+minute_x, 150-minute_y);
+    ctx.moveTo(150, 150);
+    ctx.lineTo(150+hour_x, 150-hour_y);
     ctx.stroke();
-   }
+  }
+  function length( h ) {
+    var x = Math.sin((h/12.0)*2.0*Math.PI);
+    var y = Math.cos((h/12.0)*2.0*Math.PI);
+    var coords = new Array(2);
+    coords[0] = x;
+    coords[1] = y;
+    return coords;
+  }
  </script>
 </head>
 <body onload="draw()">
