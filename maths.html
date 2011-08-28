@@ -11,19 +11,28 @@
     ctx.fillStyle = "rgb(200,0,0)";
   
     circle(ctx);
-    hour_hand(ctx, hour_x, hour_y);
-    update_minute(ctx, 20);
+    update_hour(ctx);
+    update_minute(ctx);
+    update_second(ctx);
     hour_ticks(ctx);
-    ctx.restore();
+    //ctx.restore();
   }
 
-  function offset ( h ) {
-    var x = Math.sin((h/12.0)*2.0*Math.PI);
-    var y = Math.cos((h/12.0)*2.0*Math.PI);
+  function offset ( h, is_hr ) {
+    var x,y;
+    if ( is_hr == 1 ) {
+      h = h >=12 ? h-12 : 0;
+      console.log("HOUR IS " + h);
+      x = Math.sin((h)*2.0*Math.PI);
+      y = Math.cos((h)*2.0*Math.PI);
+      console.log("HOUR COORDS " + x + ", " + y);
+    } else {
+      x = Math.sin((h/12.0)*2.0*Math.PI);
+      y = Math.cos((h/12.0)*2.0*Math.PI);
+    }
     var coords = new Array(2);
     coords[0] = x;
     coords[1] = y;
-    console.log("vars" + coords[0] + ", " + coords[1]);
     return coords;
   }
   
@@ -38,7 +47,7 @@
       ctx.lineTo(150+(x*35),150-(y*35));
       ctx.stroke();
     }
-    ctx.restore;
+    ctx.restore();
   }
 
   function circle ( ctx ) {
@@ -54,6 +63,10 @@
 
   function minute_hand ( ctx, minute_x, minute_y ) {
     draw_hand(ctx, 150, 150, minute_x, minute_y);
+  }
+
+  function second_hand ( ctx, second_x, second_y ) {
+    draw_hand(ctx, 150, 150, second_x, second_y);
   }
     
   function draw_hand ( ctx, origin_x, origin_y, hand_x, hand_y ) {
@@ -73,10 +86,32 @@
     minute_hand(ctx, minute_x, minute_y);
   }
 
+  function update_hour ( ctx ) { 
+    var time = new Date();
+    var h = offset(
+      (Math.PI/6)     * time.getHours()     + 
+      (Math.PI/360)   * time.getMinutes()   + 
+      (Math.PI/21600) * time.getSeconds(),
+      1
+    );
+    var hour_x = h[0]*35;
+    var hour_y = h[1]*35;
+    console.log('updating hour hand');
+    hour_hand(ctx, hour_x, hour_y);
+  }
+
+  function update_second ( ctx ) {
+    var time = new Date();
+    var s = offset(time.getSeconds() * Math.PI/30);
+    var second_x = s[0]*48;
+    var second_y = s[1]*48;
+    console.log("updating second hand");
+    second_hand(ctx, second_x, second_y);
+  }
 
   function init () {
     draw(); 
-    setInterval(draw(), 1000);
+    setInterval(draw, 300);
   }
 </script>
 </head>
