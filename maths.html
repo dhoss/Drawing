@@ -17,9 +17,10 @@
     //ctx.restore();
   }
 
-  function offset ( h, is_hr ) {
+  function offset ( h, type ) {
     var x,y;
-    if ( is_hr == 1 ) {
+    var time = new Date();
+    if ( type == 'hour' ) {
       h = h >=12 ? h-12 : h;
       console.log("HOUR IS " + h);
     /*  x = Math.sin((h)*2.0*Math.PI);
@@ -27,10 +28,22 @@
       x = Math.sin((h/12.0)*2.0*Math.PI);
       y = Math.cos((h/12.0)*2.0*Math.PI);
       console.log("HOUR COORDS " + x + ", " + y);
-    } else {
+    }
+    if ( type == 'minute' ) {
+      x = Math.sin((h/(Math.PI/30)*h)+(Math.PI/1800)*time.getSeconds()*2.0);
+      y = Math.cos((h/(Math.PI/30)*h)+(Math.PI/1800)*time.getSeconds()*2.0);
+      console.log('MINUTE COORDS ' + x + ', ' + y);
+    }
+    if ( type == 'hour_ticks' ) {
       x = Math.sin((h/12.0)*2.0*Math.PI);
       y = Math.cos((h/12.0)*2.0*Math.PI);
     }
+    if ( type == 'second' ) {
+      x = Math.sin((h/30.0)*2.0);
+      y = Math.cos((h/30.0)*2.0);
+      console.log('SECOND COORDS ' + x + ', ' + y);
+    }
+
     var coords = new Array(2);
     coords[0] = x;
     coords[1] = y;
@@ -41,7 +54,7 @@
     ctx.save();
     for ( var i=0; i<12; i++ ) {	  
       ctx.beginPath();
-      var tick = offset(i);
+      var tick = offset(i, 'hour_ticks');
       var x = tick[0];
       var y = tick[1];
       ctx.moveTo(150+(x*50),150-(y*50));            
@@ -81,7 +94,7 @@
 
   function update_minute ( ctx ) {
     var time = new Date();
-    var m = offset((Math.PI/30)*time.getMinutes() + (Math.PI/1800)*time.getSeconds());
+    var m = offset(time.getMinutes(), 'minute');
     var minute_x = m[0] * 50;
     var minute_y = m[1] * 50;
     console.log('updating minute hand');
@@ -91,12 +104,8 @@
   function update_hour ( ctx ) { 
     var time = new Date();
     var h = offset(
-/*      (Math.PI/6)     * time.getHours()     + 
-      (Math.PI/360)   * time.getMinutes()   + 
-      (Math.PI/21600) * time.getSeconds(),
- */
       time.getHours(),
-      1
+      'hour'
     );
     var hour_x = h[0]*30;
     var hour_y = h[1]*30;
@@ -106,7 +115,7 @@
 
   function update_second ( ctx ) {
     var time = new Date();
-    var s = offset(time.getSeconds() * Math.PI/30);
+    var s = offset(time.getSeconds(), 'second');
     var second_x = s[0]*48;
     var second_y = s[1]*48;
     console.log("updating second hand");
