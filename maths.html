@@ -5,9 +5,7 @@
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     ctx.save();
-    var h = offset(2);
-    var hour_x   = h[0] * 25;
-    var hour_y   = h[1] * 25;
+    ctx.clearRect(150,150,300,300);
     ctx.fillStyle = "rgb(200,0,0)";
   
     circle(ctx);
